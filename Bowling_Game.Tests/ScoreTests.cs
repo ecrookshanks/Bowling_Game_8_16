@@ -153,6 +153,17 @@ namespace Bowling_Game.Tests
 
     }
   
+    [Fact]
+    public void AutoRollExceptionCheck()
+    {
+      Game g = new Game();
+
+      Exception ex = Assert.Throws<RollException>(() => RoleFrame(g, 4, 8));
+
+      Assert.Equal("Pin Error", ex.Message);
+    }
+
+
     private static void RollFinalFrame(Game g, int r1, int r2, int r3)
     {
       g.roll(r1);
