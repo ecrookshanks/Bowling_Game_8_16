@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
 
 namespace Bowling_Game
 {
   public class Game
   {
-    private int MAX_FRAMES = 10;
-    private int TENTH_FRAME = 9;
-    private int MAGIC_FRAME = 8; // index of the frame where scores may reach into the 10th frame
+    private readonly int MAX_FRAMES = 10;
+    private readonly int TENTH_FRAME = 9;
+    private readonly int MAGIC_FRAME = 8; // index of the frame where scores may reach into the 10th frame
+    private readonly int MAX_PINS = 10;
 
     public Frame[] Frames { get; set; }
 
@@ -32,6 +35,19 @@ namespace Bowling_Game
 
     public void roll(int pins)
     {
+      if ( pins > MAX_PINS)
+      {
+        throw new RollException("Pin Error");
+      }
+
+      // check if second ball in frame is too much
+      int currentPins = Frames[currentFrame].Pins.Sum();
+
+      if ((currentRollInFrame == 2) && currentPins != 10 && (currentPins + pins > 10))
+      {
+        throw new RollException("Pin Error");
+      }
+
       Frames[currentFrame].Pins[currentRollInFrame-1] = pins;
 
       // special case for 10th frame

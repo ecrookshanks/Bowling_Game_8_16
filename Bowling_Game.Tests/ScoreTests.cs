@@ -128,6 +128,30 @@ namespace Bowling_Game.Tests
       Assert.Equal(300, score);
     }
   
+
+    [Fact]
+    public void CannotRollMoreThan10PinsAtOneTime()
+    {
+      Game g = new Game();
+
+      Exception ex = Assert.Throws<RollException>(() => g.roll(11));
+           
+      Assert.Equal("Pin Error", ex.Message);
+
+    }
+
+    [Fact]
+    public void SecondRollCannotPutTotalOver10ForFrame()
+    {
+      Game g = new Game();
+
+      g.roll(5);
+
+      Exception ex = Assert.Throws<RollException>(() => g.roll(6));
+
+      Assert.Equal("Pin Error", ex.Message);
+
+    }
   
     private static void RollFinalFrame(Game g, int r1, int r2, int r3)
     {
